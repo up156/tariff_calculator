@@ -4,6 +4,7 @@ import ru.fastdelivery.domain.common.currency.Currency;
 import ru.fastdelivery.domain.common.weight.Weight;
 import ru.fastdelivery.domain.delivery.pack.Pack;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -18,5 +19,11 @@ public record Shipment(
         return packages.stream()
                 .map(Pack::weight)
                 .reduce(Weight.zero(), Weight::add);
+    }
+
+    public BigDecimal getAllPackagesVolume() {
+        return packages.stream()
+                .map(Pack::getVolume)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

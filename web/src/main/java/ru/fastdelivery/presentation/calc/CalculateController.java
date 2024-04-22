@@ -15,9 +15,10 @@ import ru.fastdelivery.domain.common.weight.Weight;
 import ru.fastdelivery.domain.delivery.pack.Pack;
 import ru.fastdelivery.domain.delivery.shipment.Shipment;
 import ru.fastdelivery.presentation.api.request.CalculatePackagesRequest;
-import ru.fastdelivery.presentation.api.request.CargoPackage;
 import ru.fastdelivery.presentation.api.response.CalculatePackagesResponse;
 import ru.fastdelivery.usecase.TariffCalculateUseCase;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/calculate/")
@@ -35,13 +36,12 @@ public class CalculateController {
     })
     public CalculatePackagesResponse calculate(
             @Valid @RequestBody CalculatePackagesRequest request) {
-        var packsWeights = request.packages().stream()
-                .map(CargoPackage::weight)
-                .map(Weight::new)
-                .map(Pack::new)
+
+        List<Pack> packList = request.packages().stream()
+                .map(e -> new Pack(new Weight(e.weight()), e.length(), e.width(), e.height()))
                 .toList();
 
-        var shipment = new Shipment(packsWeights, currencyFactory.create(request.currencyCode()));
+        var shipment = new Shipment(packList, currencyFactory.create(request.currencyCode()));
         var calculatedPrice = tariffCalculateUseCase.calc(shipment);
         var minimalPrice = tariffCalculateUseCase.minimalPrice();
         return new CalculatePackagesResponse(calculatedPrice, minimalPrice);
