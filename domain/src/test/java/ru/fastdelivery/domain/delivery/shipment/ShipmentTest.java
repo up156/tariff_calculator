@@ -21,11 +21,13 @@ class ShipmentTest {
         var length = BigInteger.ONE;
         var width = BigInteger.ONE;
         var height = BigInteger.ONE;
+        var departure = new Coordinates(73.555555, 55.222222);
+        var destination = new Coordinates(53.555555, 35.222222);
 
 
         var packages = List.of(new Pack(weight1, length, width, height),
                 new Pack(weight2, length, width, height));
-        var shipment = new Shipment(packages, new CurrencyFactory(code -> true).create("RUB"));
+        var shipment = new Shipment(packages, departure, destination, new CurrencyFactory(code -> true).create("RUB"));
 
         var massOfShipment = shipment.weightAllPackages();
 
@@ -42,11 +44,13 @@ class ShipmentTest {
         var length2 = BigInteger.valueOf(1000);
         var width2 = BigInteger.valueOf(1000);
         var height2 = BigInteger.valueOf(1000);
+        var departure = new Coordinates(73.555555, 55.222222);
+        var destination = new Coordinates(53.555555, 35.222222);
 
 
         var packages = List.of(new Pack(weight1, length1, width1, height1),
                 new Pack(weight2, length2, width2, height2));
-        var shipment = new Shipment(packages, new CurrencyFactory(code -> true).create("RUB"));
+        var shipment = new Shipment(packages, departure, destination, new CurrencyFactory(code -> true).create("RUB"));
 
         var volumeOfShipment = shipment.getAllPackagesVolume();
 

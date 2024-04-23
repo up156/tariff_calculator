@@ -41,7 +41,7 @@ public class CalculateController {
                 .map(e -> new Pack(new Weight(e.weight()), e.length(), e.width(), e.height()))
                 .toList();
 
-        var shipment = new Shipment(packList, currencyFactory.create(request.currencyCode()));
+        var shipment = new Shipment(packList, request.departure(), request.destination(), currencyFactory.create(request.currencyCode()));
         var calculatedPrice = tariffCalculateUseCase.calc(shipment);
         var minimalPrice = tariffCalculateUseCase.minimalPrice();
         return new CalculatePackagesResponse(calculatedPrice, minimalPrice);

@@ -6,3 +6,9 @@ cost:
     perKg: 400
     perCubicMetre: 30000
     minimal: 350
+coordinates:
+  minLatitude: 45
+  maxLatitude: 65
+  minLongitude: 30
+  maxLongitude: 96
+  minDestination: 450

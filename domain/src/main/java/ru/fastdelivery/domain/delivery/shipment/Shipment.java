@@ -10,10 +10,15 @@ import java.util.List;
 /**
  * @param packages упаковки в грузе
  * @param currency валюта объявленная для груза
+ * @param departure координаты пункта отправки
+ * @param destination координаты пункта назначения
  */
 public record Shipment(
         List<Pack> packages,
+        Coordinates departure,
+        Coordinates destination,
         Currency currency
+
 ) {
     public Weight weightAllPackages() {
         return packages.stream()

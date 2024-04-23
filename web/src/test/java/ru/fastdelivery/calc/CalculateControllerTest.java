@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import ru.fastdelivery.ControllerTest;
 import ru.fastdelivery.domain.common.currency.CurrencyFactory;
 import ru.fastdelivery.domain.common.price.Price;
+import ru.fastdelivery.domain.delivery.shipment.Coordinates;
 import ru.fastdelivery.presentation.api.request.CalculatePackagesRequest;
 import ru.fastdelivery.presentation.api.request.CargoPackage;
 import ru.fastdelivery.presentation.api.response.CalculatePackagesResponse;
@@ -35,8 +36,11 @@ class CalculateControllerTest extends ControllerTest {
         var length = BigInteger.ONE;
         var width = BigInteger.ONE;
         var height = BigInteger.ONE;
+        var departure = new Coordinates(73.555555, 55.222222);
+        var destination = new Coordinates(53.555555, 35.222222);
+
         var request = new CalculatePackagesRequest(
-                List.of(new CargoPackage(BigInteger.TEN, length, width, height)), "RUB");
+                List.of(new CargoPackage(BigInteger.TEN, length, width, height)), "RUB", departure, destination);
         var rub = new CurrencyFactory(code -> true).create("RUB");
         when(useCase.calc(any())).thenReturn(new Price(BigDecimal.valueOf(10), rub));
         when(useCase.minimalPrice()).thenReturn(new Price(BigDecimal.valueOf(5), rub));
@@ -50,7 +54,9 @@ class CalculateControllerTest extends ControllerTest {
     @Test
     @DisplayName("Список упаковок == null -> Ответ 400")
     void whenEmptyListPackages_thenReturn400() {
-        var request = new CalculatePackagesRequest(null, "RUB");
+        var departure = new Coordinates(73.555555, 55.222222);
+        var destination = new Coordinates(53.555555, 35.222222);
+        var request = new CalculatePackagesRequest(null, "RUB", departure, destination);
 
         ResponseEntity<String> response = restTemplate.postForEntity(baseCalculateApi, request, String.class);
 
